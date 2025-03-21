@@ -2,6 +2,12 @@
 {% block body %}
     <div class="container mt-5">
         <div class="row">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
             {% if cards is not empty %}
             <div class="col-md-3">
                 <form method="get">
@@ -89,7 +95,7 @@
                                     </p>
                                     <a href="{{ card.link }}">See offer on the web</a>
                                     <br>
-                                     <a href="{{ path('app_card_edit_form', {'id': card.id}) }}" class="btn btn-sm btn-primary mt-2">Edit</a>
+                                     <a href="{{ path('app_card_edit', {'id': card.id}) }}" class="btn btn-sm btn-primary mt-2">Edit</a>
                                 </div>
                             </div>
                         </div>

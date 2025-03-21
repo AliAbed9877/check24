@@ -49,4 +49,20 @@ class CardChangeRepository extends ServiceEntityRepository implements Repository
         $this->getEntityManager()->persist($entity);
         $this->getEntityManager()->flush();
     }
+    /**
+     * Fetch change history for a specific card, ordered by creation date descending.
+     *
+     * @param int $cardId
+     * @return CardChange[]
+     */
+    public function findChangesByCardId(int $cardId): array
+    {
+        return $this->createQueryBuilder('cc')
+            ->where('cc.card = :cardId')
+            ->setParameter('cardId', $cardId)
+            ->orderBy('cc.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

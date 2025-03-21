@@ -110,4 +110,13 @@ class CardService implements CardServiceInterface
         }
         return $card;
     }
+
+    public function getChangesForCard(int $cardId): array
+    {
+        $changedCard = $this->cardChangeRepository->findChangesByCardId($cardId);
+        if (empty($changedCard)) {
+            throw new InvalidArgumentException("No changes found for {$cardId}");
+        }
+        return $changedCard;
+    }
 }

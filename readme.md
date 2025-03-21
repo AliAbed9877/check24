@@ -1,29 +1,49 @@
-# CHECK24 Credit Card Comparison
+# CHECK24 Code Challenge
 
-This is a Symfony-based application for comparing credit cards, built as a solution to the CHECK24 code challenge. It imports credit card data from an external API, displays it in a sortable list, and allows non-technical users to edit card details with persistence across updates.
+A Symfony-based application that imports credit card data from an external API, displays it in a sortable list, and allows non-technical users to edit card details while ensuring changes persist across API updates.
 
-## Features
-- **Data Import**: Fetches credit card data from webservice API and updates the local MySQL database.
-- **Results Page**: Displays a list of credit cards with dynamic sorting by price (`annualFee`) or name (`name`), in ascending or descending order.
-- **Editing**: Allows editing of card details (`name`, `annualFee`, `remarks`) via a dedicated page, with changes stored separately to persist across API updates.
-- **Remarks**: Highlights key features (e.g., "No annual fee!" or "High TAE!") with checkmarks or warnings this option is handled in frontend with filtering some words.
+## 🚀 Features
 
-## Tech Stack
-- **Framework**: Symfony (latest version as of March 2025)
-- **Database**: MySQL with Doctrine ORM
-- **Frontend**: Twig templates with Bootstrap 5 for styling
-- **API Client**: Symfony HttpClient for fetching XML data
-- **CLI**: Symfony Console for importing data
+### 🔄 Data Import
+- Fetches credit card data from an external **web service API**.
+- Updates or inserts records into the **local MySQL database**.
 
-## Design Principles
-- **SOLID**: Single Responsibility (e.g., separate repositories and services), Dependency Inversion (via interfaces).
-- **Clean Code**: Readable, maintainable code with meaningful names and minimal complexity.
-- **Partial DDD**: Separates concerns with entities, repositories, and services, though not fully domain-driven.
-- **Contracts**: Uses `RepositoryInterface` and `CardServiceInterface` for abstraction.
-- **Business Logic**: Encapsulated in services and repositories, keeping controllers thin.
+### 📄 Results Page
+- Displays a **sortable list** of credit cards.
+- Users can sort by:
+    - **Annual Fee (`annualFee`)**
+    - **Card Name (`name`)**
+- Sorting works in **ascending** and **descending** order.
 
-## Prerequisites
-- PHP 8.1+
-- Composer
-- MySQL
-- Symfony CLI (optional, for `symfony server:start`)
+### 🖊️ Editing
+- Users can **edit credit card details**:
+    - **Name**
+    - **Annual Fee**
+    - **Remarks**
+- Changes are **stored separately** to persist across API updates.
+
+### ✅ Feature Highlights
+- Key card features (e.g., `"No annual fee!"`, `"High TAE!"`) are:
+    - **Automatically identified**
+    - **Displayed with checkmarks** (✔) or **warnings** (!)
+- This filtering is **handled in the frontend** but can also be managed in backend services.
+
+---
+
+## 🔍 Additional Notes
+- 🛠 **Filtering Logic**: Implemented in the backend but **not mandatory**.
+- 🎨 **Feature Differences**: Currently handled in the frontend but can be moved to services.
+- 🧪 **Testing**: Some unit and functional tests are included.
+
+---
+
+## 🏗️ Design Principles
+
+### 📌 SOLID Principles
+- **Single Responsibility Principle (SRP)** → **Separation of concerns** (Repositories, Services, Controllers).
+- **Dependency Inversion Principle (DIP)** → Uses interfaces (`RepositoryInterface`, `CardServiceInterface`).
+
+### 📦 Clean Code & Partial DDD
+- Uses **Entities, Repositories, and Services** for separation of concerns.
+- Business logic is **encapsulated within services and repositories**, keeping controllers lightweight.
+
