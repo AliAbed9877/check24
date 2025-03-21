@@ -1,0 +1,107 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container mt-5">
+        <div class="row">
+            {% if cards is not empty %}
+            <div class="col-md-3">
+                <form method="get">
+                    <div class="mb-3">
+                        <h3 class="h6">Sort by</h3>
+                        <div class="row g-2 align-items-center">
+                            <div class="col-auto">
+                                <select name="sort" id="sort" class="form-select" onchange="this.form.submit()">
+                                    <option value="annualFee" {{ currentSort == 'annualFee' ? 'selected' }}>Price
+                                    </option>
+                                    <option value="name" {{ currentSort == 'name' ? 'selected' }}>Name</option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <select name="direction" id="direction" class="form-select"
+                                        onchange="this.form.submit()">
+                                    <option value="ASC" {{ currentDirection == 'ASC' ? 'selected' }}>Ascending
+                                    </option>
+                                    <option value="DESC" {{ currentDirection == 'DESC' ? 'selected' }}>Descending
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Cards Section -->
+            <div class="col-md-9">
+                <h1 class="text-center">Comparison of Cards</h1>
+                <div class="card-list">
+                    {% for card in cards %}
+                        <div class="card-item mb-4 p-3 border rounded">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <img src="{{ card.logo }}" alt="{{ card.name }}" class="img-fluid"
+                                         style="max-width: 120px; height: auto;">
+                                </div>
+                                <div class="col-md-7">
+                                    <h3>{{ loop.index }}. {{ card.name }}</h3>
+                                    <ul class="list-unstyled">
+                                    </ul>
+                                    {% if card.remarks %}
+                                        {% set lines = card.remarks|split('<li>')|filter(v => v|trim) %}
+                                        {% for line in lines %}
+                                            {% set cleanLine = line|replace({'</li>': '', '<strong>': '', '</strong>': ''})|trim %}
+                                            {% if cleanLine matches '/Gratis|sin intereses|Seguro/' %}
+                                                <span class="text-success">✓ {{ cleanLine }}</span><br>
+                                            {% elseif cleanLine matches '/Residir|años|ASNEF/' %}
+                                                <span class="text-red">! {{ cleanLine }}</span><br>
+                                            {% else %}
+                                                <span class="font-weight-bold text-dark">{{ cleanLine }}</span><br>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                    {% if card.specialFeature %}
+                                        <p class="card-text">
+                                            {% set lines = card.specialFeature|split('<li>')|filter(v => v|trim) %}
+                                            {% for line in lines %}
+                                                {% set cleanLine = line|replace({'</li>': '', '<strong>': '', '</strong>': ''})|trim %}
+                                                {% if cleanLine matches '/Gratis|sin intereses|Seguro/' %}
+                                                    <span class="text-success">✓ {{ cleanLine }}</span><br>
+                                                {% elseif cleanLine matches '/Residir|años|ASNEF/' %}
+                                                    <span class="text-danger">! {{ cleanLine }}</span><br>
+                                                {% else %}
+                                                    <span class="font-weight-bold text-dark">{{ cleanLine }}</span><br>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </p>
+                                    {% endif %}
+                                    <a href="{{ card.link }}" class="btn btn-primary">Apply Now</a>
+                                </div>
+                                <div class="col-md-3 text-right">
+                                    <h4>{{ card.annualFee|number_format(2) }} €</h4>
+                                    <p>Annual Fee (first year: {{ card.firstYearFee|number_format(2) }} €)</p>
+                                    <p>TAE {{ card.tae ? card.tae|number_format(2) ~ '%' : '0%' }}</p>
+                                    <p>{{ card.cardTypeLabel }}</p>
+                                    <p>
+                                        {% for i in 1..5 %}
+                                            {% if card.rating >= i %}
+                                                <span style="color: gold;">&#9733;</span>
+                                            {% else %}
+                                                <span style="color: gray;">&#9734;</span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </p>
+                                    <a href="{{ card.link }}">See offer on the web</a>
+                                    <br>
+                                     <a href="{{ path('app_card_edit_form', {'id': card.id}) }}" class="btn btn-sm btn-primary mt-2">Edit</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+            {% else %}
+                <div class="text-center mt-5">
+                    <h3>Nothing to Show</h3>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
